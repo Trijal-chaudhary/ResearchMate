@@ -6,7 +6,10 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter;
 import chromadb
 
 client = chromadb.PersistentClient(path="./dataBase")
-
+try:
+  client.delete_collection("embedings")
+except:
+  pass
 collection = client.get_or_create_collection("embedings")
 
 app = FastAPI()
@@ -39,7 +42,25 @@ def extract_pdf(files : ExtractPDFRequest):
   pdf_data = dir_loader.load()
   split_texts = split_text(pdf_data, 1000, 200)
   
-  print(split_texts)
+  ids = []
+  documents = []
+  metadata = []
+  for i, chunk in enumerate(split_texts):
+
+    ids.append(f"chunk_{i}")
+
+    documents.append(chunk.page_content)
+
+    metadata.append(chunk.metadata)
+  # adding the documents
+  collection.add(
+    ids=ids,
+    documents=documents,
+    metadatas=metadata
+  )
+
+  data = collection.get()
+  print(data)
   return {
     "mess" : "extracting"
   }

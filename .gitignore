@@ -3,12 +3,13 @@ server/node_modules/
 client/node_modules/
 
 # Python
-python-service/venv/
-python-service/__pycache__/
-python-service/*.pyc
+python-services/venv/
+python-services/__pycache__/
+python-services/*.pyc
 
 # ChromaDB
-python-service/chromadb/
+python-services/chromadb/
+python-services/dataBase/
 
 # Uploaded PDFs
 server/upload/
