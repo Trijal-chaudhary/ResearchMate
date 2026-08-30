@@ -1,9 +1,9 @@
 import express from "express";
-import { pdfUploads } from "../controllers/main.controller";
+import { clearUploadFolder, pdfUploads } from "../controllers/main.controller";
 import uploadPDF from "../middleware/multer";
 
 const pdfUploadsRouter = express.Router();
 
-pdfUploadsRouter.post("/", uploadPDF.any(), pdfUploads);
+pdfUploadsRouter.post("/", clearUploadFolder, uploadPDF.any(), pdfUploads);
 
 export { pdfUploadsRouter };

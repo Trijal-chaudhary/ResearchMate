@@ -1,5 +1,23 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import fs from "fs";
+import path from "path";
+export const clearUploadFolder = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const uploadPath = path.join(process.cwd(), "upload");
 
+  const files = fs.readdirSync(uploadPath);
+
+  for (const file of files) {
+    const filePath = path.join(uploadPath, file);
+
+    fs.unlinkSync(filePath);
+  }
+
+  next();
+};
 export const pdfUploads = async (req: Request, res: Response) => {
   // console.log(req.body);
   try {

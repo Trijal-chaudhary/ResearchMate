@@ -2,6 +2,12 @@ from fastapi import FastAPI, UploadFile, File;
 from pydantic import BaseModel;
 from typing import List;
 from langchain_community.document_loaders import (DirectoryLoader, PyMuPDFLoader);
+from langchain_text_splitters import RecursiveCharacterTextSplitter;
+import chromadb
+
+client = chromadb.PersistentClient(path="./dataBase")
+
+collection = client.get_or_create_collection("embedings")
 
 app = FastAPI()
 class FileInfo(BaseModel):
@@ -9,6 +15,16 @@ class FileInfo(BaseModel):
   name: str
 class ExtractPDFRequest(BaseModel):
   fileArray: List[FileInfo]
+
+def split_text(document, chunk_size, chunk_overlap):
+  split_text = RecursiveCharacterTextSplitter(
+    chunk_size = chunk_size,
+    chunk_overlap = chunk_overlap,
+    separators=["\n\n", "\n", " ", ""],
+    length_function=len
+  )
+  split_docs = split_text.split_documents(document)
+  return split_docs
 @app.post('/api/extract_pdf')
 def extract_pdf(files : ExtractPDFRequest):
   # for file in files.fileArray:
@@ -21,7 +37,9 @@ def extract_pdf(files : ExtractPDFRequest):
     show_progress=False
   )
   pdf_data = dir_loader.load()
-  print(pdf_data)
+  split_texts = split_text(pdf_data, 1000, 200)
+  
+  print(split_texts)
   return {
     "mess" : "extracting"
   }
