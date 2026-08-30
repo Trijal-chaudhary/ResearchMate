@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { pdfUploadsRouter } from "./Routers/main.router";
+import { pdfUploadsRouter, queryRouter } from "./Routers/main.router";
 
 const app = express();
 app.use(express.json());
@@ -10,6 +10,7 @@ app.use(
   })
 );
 app.use("/api/upload_pdfs", pdfUploadsRouter);
+app.use("/api/query", queryRouter);
 const PORT = 3005;
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
