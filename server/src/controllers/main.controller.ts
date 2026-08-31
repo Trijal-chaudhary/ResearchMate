@@ -42,9 +42,17 @@ export const pdfUploads = async (req: Request, res: Response) => {
   }
 };
 
-export const query = (req: Request, res: Response) => {
+export const query = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
+    const response = await fetch("http://127.0.0.1:8000/api/sementic_search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req.body),
+    });
+    console.log(response.json());
     res.status(200).json({ mess: "hello world" });
   } catch (error) {
     res.status(500).json({ mess: error });

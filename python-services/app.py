@@ -64,3 +64,14 @@ def extract_pdf(files : ExtractPDFRequest):
   return {
     "mess" : "extracting"
   }
+
+#for sementic search
+
+class queryData(BaseModel):
+  query : str
+@app.post("/api/sementic_search")
+def sementicSearch(query : queryData):
+  print(query)
+  return{
+    "mess" : "doing the sementic search"
+  }

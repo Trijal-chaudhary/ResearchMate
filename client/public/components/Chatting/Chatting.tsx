@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Chatting.css";
+import { query } from "../../../src/services/fetching";
 
 interface Message {
   id: number;
@@ -26,7 +27,7 @@ const Chatting = () => {
     "4. Middlewere.pdf",
   ];
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
 
     const userMessage: Message = {
@@ -38,6 +39,7 @@ const Chatting = () => {
     setMessages((previous) => [...previous, userMessage]);
 
     setInput("");
+    await query(input);
 
     /*
       Later, you will call your FastAPI backend here.
