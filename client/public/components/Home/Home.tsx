@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import "./Home.css";
 import { upload_pdfs } from "../../../src/services/fetching";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -64,7 +65,7 @@ const Home = () => {
     files.forEach((file) => formData.append("files", file));
     //
     await upload_pdfs(formData);
-
+    navigate("/chat");
     // fetch("http://localhost:3000/upload", {
     //   method: "POST",
     //   body: formData

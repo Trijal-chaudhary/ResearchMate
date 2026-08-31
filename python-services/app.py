@@ -72,6 +72,11 @@ class queryData(BaseModel):
 @app.post("/api/sementic_search")
 def sementicSearch(query : queryData):
   print(query)
+  resuts = collection.query(
+    query_texts=[query.query],
+    n_results=4
+  )
+  print(resuts)
   return{
-    "mess" : "doing the sementic search"
+    "results":resuts
   }

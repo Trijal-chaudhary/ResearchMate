@@ -52,8 +52,10 @@ export const query = async (req: Request, res: Response) => {
       },
       body: JSON.stringify(req.body),
     });
-    console.log(response.json());
-    res.status(200).json({ mess: "hello world" });
+    const data = await response.json();
+    console.log(data.results);
+    console.log(data.results.metadatas[0]);
+    res.status(200).json({ results: data.results });
   } catch (error) {
     res.status(500).json({ mess: error });
   }
